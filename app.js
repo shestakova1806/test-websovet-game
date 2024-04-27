@@ -81,7 +81,29 @@ app.render.redrawDisabledForAllCards = function(){
   }
 }
 
+// перемешать карточки на поле
+app.shuffleCards = function () {
+  const allCards = [...app.puzz[0].flat(), ...app.puzz[1].flat(), ...app.puzz[2].flat(), ...app.puzz[3].flat()];
+  let allIds = allCards.map(obj => obj.card_id);
 
+  shuffle(allIds);
+
+  for (let level in app.puzz) {
+    app.puzz[level].forEach(array => {
+      if (array.length) {
+        array.forEach(element => {
+          if (element) {
+            element.card_id = allIds[0];
+            allIds.splice(0, 1);
+          }
+        })
+      }
+    })
+    level++;
+  }
+
+  app.render.renderCards();
+}
 
 /*
  * Клик по карточке, на вход подаётся данные по какой карточке
